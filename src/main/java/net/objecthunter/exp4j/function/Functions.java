@@ -254,4 +254,29 @@ public class Functions {
         }
     }
 
+
+    public static Function copy(final Function function) {
+        if (function == null) return null;
+        return new Function(function.name, function.numArguments){
+            @Override
+            public double apply(double... args) {
+                return function.apply(args);
+            }
+        };
+    }
+
+    /**
+     * add user function average for dynamic argument size
+     */
+    public static Function average = new Function("average") {
+        @Override
+        public double apply(double... args) {
+            if (args.length == 0) return 0;
+            double sum = 0;
+            for (double arg : args) {
+                sum += arg;
+            }
+            return sum/args.length;
+        }
+    };
 }

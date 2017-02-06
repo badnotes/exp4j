@@ -167,6 +167,22 @@ public class ExpressionTest {
 
     }
 
+    @Test
+    public void testUserFunction() throws Exception {
+
+        double v = new ExpressionBuilder("a+average(b,c)+average(a,b,c)")
+                .variables("a", "b", "c")
+                .functions(Functions.average)
+                .build()
+                .setVariable("a", 1)
+                .setVariable("b", 2)
+                .setVariable("c", 3)
+                .evaluate();
+
+        System.out.println("v = " + v);
+        assertEquals(5.5, v, 0d);
+    }
+
     @Test(expected = ArithmeticException.class)
     public void testInvalidCotangent1() {
         Expression e = new ExpressionBuilder("cot(0)")

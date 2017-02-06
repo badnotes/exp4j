@@ -164,7 +164,7 @@ public class Tokenizer {
                 lastValidLen = len;
                 lastValidToken = new VariableToken(name);
             } else {
-                final Function f = getFunction(name);
+                final Function f = getFunction(name, offset);
                 if (f != null) {
                     lastValidLen = len;
                     lastValidToken = new FunctionToken(f);
@@ -181,10 +181,38 @@ public class Tokenizer {
         return lastToken;
     }
 
-    private Function getFunction(String name) {
+    /**
+     * set user function argument size
+     */
+    private void setFunctionArgument(final String expression, String name, Function function){
+
+        if (expression.contains(name)){
+            String v = expression.substring(expression.indexOf(name));
+            char[] chars = v.toCharArray();
+            int left = 0;
+            int right = 0;
+            int comma = 0;
+            for (int i = 0; i < chars.length; i++){
+                char c = chars[i];
+
+                if ('(' == c) left ++;
+                else if (')' == c) right ++;
+
+                if (',' == c) comma ++;
+                if (left != 0 && left == right) break;
+            }
+            function.setNumArguments(comma+1);
+        }
+    }
+
+
+    private Function getFunction(String name, int offset) {
         Function f = null;
         if (this.userFunctions != null) {
-            f = this.userFunctions.get(name);
+            f = Functions.copy(this.userFunctions.get(name));
+            if (f != null) {
+                this.setFunctionArgument(new String(expression, offset, expressionLength - offset), name, f);
+            }
         }
         if (f == null) {
             f = Functions.getBuiltinFunction(name);

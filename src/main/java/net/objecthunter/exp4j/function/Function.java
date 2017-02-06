@@ -23,7 +23,7 @@ public abstract class Function {
 
     protected final String name;
 
-    protected final int numArguments;
+    protected int numArguments;
 
     /**
      * Create a new Function with a given name and number of arguments
@@ -69,6 +69,10 @@ public abstract class Function {
      */
     public int getNumArguments() {
         return numArguments;
+    }
+
+    public void setNumArguments(int n){
+        this.numArguments = n;
     }
 
     /**

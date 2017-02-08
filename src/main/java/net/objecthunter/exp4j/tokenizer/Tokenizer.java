@@ -198,7 +198,7 @@ public class Tokenizer {
                 if ('(' == c) left ++;
                 else if (')' == c) right ++;
 
-                if (',' == c) comma ++;
+                if (',' == c && left == right + 1) comma ++;
                 if (left != 0 && left == right) break;
             }
             function.setNumArguments(comma+1);
